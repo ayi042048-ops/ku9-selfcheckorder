@@ -348,27 +348,16 @@
       </div>
 
       <!-- Upload box -->
-      <div class="upload-box" style="margin-bottom: 1em; width:150px; height:150px; position:relative;">
-        <div class="upload-text" style="margin-bottom:5px;">
-          Please click the <b style="color:#3a7d44;">+</b> to upload your payment receipt.
+      <div class="upload-box" style="margin-bottom: 1em;">
+        <div class="upload-text">
+          Please click the <b style="color:#3a7d44;">+</b> on the right to upload your payment receipt for verification.
         </div>
-      
-        <label class="upload-area" for="file-upload" 
-               style="display:block; width:100%; height:100%; border:2px dashed #8dc890; border-radius:12px; cursor:pointer; overflow:hidden; position:relative; text-align:center;">
-      
-          <!-- Preview image (hidden initially) -->
-          <img id="receiptPreview" src="" alt="Receipt Preview" 
-               style="display:none; width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0;" />
-      
-          <!-- Plus icon in the center -->
-          <svg id="plusIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" 
-               style="width:50px; height:50px; fill:#8dc890; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); pointer-events:none;">
+        <label class="upload-area" for="file-upload">
+          <img id="receiptPreview" src="" alt="Receipt Preview" style="display:none; width:100%; height:100%; object-fit:cover; border-radius:12px;" />
+          <svg id="plusIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
             <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z" />
           </svg>
-      
-          <!-- File input -->
-          <input type="file" id="file-upload" name="receipt" accept=".jpg,.jpeg,.png,.heic,.heif" required 
-                 style="opacity:0; width:100%; height:100%; position:absolute; top:0; left:0; cursor:pointer;" />
+          <input type="file" id="file-upload" name="receipt" accept=".jpg,.jpeg,.png,.heic,.heif" required />
         </label>
       </div>
 
@@ -542,24 +531,20 @@
   </script>
   <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const receiptInput = document.getElementById('file-upload');
-    const receiptPreview = document.getElementById('receiptPreview');
-    const plusIcon = document.getElementById('plusIcon');
+    const fileUpload = document.getElementById("file-upload");
+    const receiptPreview = document.getElementById("receiptPreview");
+    const plusIcon = document.getElementById("plusIcon");
   
-    receiptInput.addEventListener('change', () => {
-      const file = receiptInput.files[0];
+    fileUpload.addEventListener("change", function () {
+      const file = this.files[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
           receiptPreview.src = e.target.result;
-          receiptPreview.style.display = 'block';
-          plusIcon.style.display = 'none'; // hide the plus icon
-        }
+          receiptPreview.style.display = "block"; // show image
+          plusIcon.style.display = "none";       // hide "+"
+        };
         reader.readAsDataURL(file);
-      } else {
-        receiptPreview.src = '';
-        receiptPreview.style.display = 'none';
-        plusIcon.style.display = 'block'; // show the plus icon again
       }
     });
   });
@@ -590,6 +575,7 @@
   </script>
 </body>
 </html>
+
 
 
 
