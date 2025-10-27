@@ -465,70 +465,69 @@
       });
     });
   </script>
-    <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
-
-    const SUPABASE_URL = 'https://gfeopuwjfzigxgojggew.supabase.co' 
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdmZW9wdXdqZnppZ3hnb2pnZ2V3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE1OTE1NzcsImV4cCI6MjA3NzE2NzU3N30.oSc000dfrevIxY_u1MWMWmH6d-Zhi4g9kDT66JtVbIY' 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-
-    const form = document.getElementById('deposit-form')
-    const fileInput = document.getElementById('file-upload')
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/heic', 'image/heif']
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault()
-
-      const file = fileInput.files[0]
-      if (!file) {
-        alert('Please upload a receipt image before submitting.')
-        return
+  <script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+  
+  const SUPABASE_URL = 'https://gfeopuwjfzigxgojggew.supabase.co'
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdmZW9wdXdqZnppZ3hnb2pnZ2V3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE1OTE1NzcsImV4cCI6MjA3NzE2NzU3N30.oSc000dfrevIxY_u1MWMWmH6d-Zhi4g9kDT66JtVbIY'
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+  
+  const form = document.getElementById('deposit-form')
+  const fileInput = document.getElementById('file-upload')
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/heic', 'image/heif']
+  
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault()
+  
+    const file = fileInput.files[0]
+    if (!file) {
+      alert('Please upload a receipt image before submitting.')
+      return
+    }
+  
+    if (!allowedTypes.includes(file.type)) {
+      alert('Invalid file type! Only JPEG, PNG, HEIC, HEIF are allowed.')
+      return
+    }
+  
+    try {
+      // Upload file to Supabase Storage
+      const filePath = `receipts/${Date.now()}_${file.name}`
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('receipts')
+        .upload(filePath, file)
+  
+      if (uploadError) throw uploadError
+  
+      // Get public URL
+      const { data: urlData } = supabase.storage
+        .from('receipts')
+        .getPublicUrl(filePath)
+  
+      const publicUrl = urlData.publicUrl
+      if (!publicUrl) throw new Error('Failed to get public URL.')
+  
+      // Prepare data for table
+      const formData = {
+        order_no: form.order_no.value,
+        channel_name: form.channel_name.value,
+        ref_no: form.ref_no.value,
+        receipt_url: publicUrl
       }
-
-      if (!allowedTypes.includes(file.type)) {
-        alert('Invalid file type! Only image files are allowed.')
-        return
-      }
-
-      try {
-        // Upload to Supabase Storage
-        const filePath = `receipts/${Date.now()}_${file.name}`
-        const { data: uploadData, error: uploadError } = await supabase.storage
-          .from('receipts')
-          .upload(filePath, file)
-
-        if (uploadError) throw uploadError
-
-        // Get public URL
-        const { publicUrl, error: urlError } = supabase
-          .storage
-          .from('receipts')
-          .getPublicUrl(filePath)
-
-        if (urlError) throw urlError
-
-        // Save form data to table
-        const formData = {
-          order_no: form.order_no.value,
-          channel_name: form.channel_name.value,
-          ref_no: form.ref_no.value,
-          receipt_url: publicUrl
-        }
-
-        const { data, error } = await supabase
-          .from('orders')
-          .insert([formData])
-
-        if (error) throw error
-
-        showPopupMessage('Request submitted successfully!\nThe system will check your deposit and update the scores within 30 mins, please wait patiently.');
-        form.reset()
-      } catch (err) {
-        console.error(err)
-        alert('Something went wrong: ' + err.message)
-      }
-    })
+  
+      // Insert into 'orders' table
+      const { data, error } = await supabase.from('orders').insert([formData])
+      if (error) throw error
+  
+      alert('Request submitted successfully! The system will check your deposit within 30 mins.')
+      form.reset()
+    } catch (err) {
+      console.error('Submission error:', err)
+      alert('Something went wrong: ' + err.message)
+    }
+  })
   </script>
+
   <script>
   document.addEventListener('DOMContentLoaded', () => {
     const fileUpload = document.getElementById("file-upload");
@@ -575,6 +574,7 @@
   </script>
 </body>
 </html>
+
 
 
 
