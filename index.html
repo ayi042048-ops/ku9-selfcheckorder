@@ -358,6 +358,7 @@
           </svg>
           <input type="file" id="file-upload" name="receipt" accept=".jpg,.jpeg,.png,.heic,.heif" required />
         </label>
+        <img id="receiptPreview" src="" alt="Receipt Preview" style="display:none; margin-top:10px; max-width:100%; border-radius:10px; border:1px solid #8dc890;" />
       </div>
 
       <!-- Step 3 -->
@@ -529,6 +530,25 @@
     })
   </script>
   <script>
+    const receiptInput = document.getElementById('file-upload');
+    const receiptPreview = document.getElementById('receiptPreview');
+  
+    receiptInput.addEventListener('change', () => {
+        const file = receiptInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                receiptPreview.src = e.target.result;
+                receiptPreview.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+        } else {
+            receiptPreview.src = '';
+            receiptPreview.style.display = 'none';
+        }
+    });
+  </script>
+  <script>
     const popup = document.getElementById('popupMessage');
     const popupText = document.getElementById('popupText');
     const popupOk = document.getElementById('popupOk');
@@ -554,4 +574,5 @@
   </script>
 </body>
 </html>
+
 
