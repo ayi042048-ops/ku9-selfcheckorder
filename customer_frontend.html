@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Self-Check Deposit Order</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+      margin: 0;
+      background: linear-gradient(to bottom, #f0faf0, #d1f2d8);
+      color: #2a3e2b;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Top-left text */
+    .top-left-text {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      font-size: 0.85rem;
+      color: #3a7d44;
+      font-weight: 600;
+      user-select: none;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 420px;
+      background: #ffffffcc;
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin: 60px auto 20px auto;
+      box-shadow: 0 4px 15px rgba(42, 62, 43, 0.15);
+    }
+
+    .title {
+      text-align: center;
+      margin-top: 0.5em;
+      color: #3a7d44;
+      font-weight: 700;
+      font-size: 1.3rem;
+    }
+
+    .title p {
+      margin-top: 0.3em;
+      color: #4a6a43;
+      font-weight: 500;
+      font-size: 1rem;
+    }
+
+    .step {
+      margin-top: 1em;
+    }
+
+    .step-number {
+      display: inline-block;
+      background: #3a7d44;
+      color: white;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      line-height: 28px;
+      text-align: center;
+      font-weight: 700;
+      margin-right: 10px;
+      font-size: 0.95rem;
+      user-select: none;
+      vertical-align: middle;
+    }
+
+    .step-label {
+      font-weight: 700;
+      color: #3a7d44;
+      font-size: 1.1rem;
+      vertical-align: middle;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 0.75em 1em;
+      border-radius: 12px;
+      border: 1.5px solid #9ace94;
+      font-size: 1rem;
+      margin-top: 0.5em;
+      color: #2a3e2b;
+      font-weight: 600;
+      box-sizing: border-box;
+      transition: border-color 0.3s ease;
+    }
+
+    input[type="text"]::placeholder {
+      color: #82b984;
+      font-weight: 500;
+    }
+
+    input[type="text"]:focus {
+      border-color: #3a7d44;
+      outline: none;
+    }
+
+    .upload-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 2px dashed #3a7d44;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-top: 10px;
+      background: #f4fff4;
+    }
+
+    .upload-text {
+      font-size: 0.92em;
+      color: #446a44;
+      flex: 1;
+      padding-right: 12px;
+      line-height: 1.3;
+    }
+
+    .upload-area {
+      width: 72px;
+      height: 72px;
+      border: 2.5px dashed #3a7d44;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 12px;
+      cursor: pointer;
+      background: #e6f6e6;
+      transition: background-color 0.3s ease;
+    }
+
+    .upload-area:hover {
+      background-color: #d1f2d8;
+    }
+
+    .upload-area svg {
+      fill: #3a7d44;
+      width: 28px;
+      height: 28px;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    button {
+      width: 100%;
+      background: #3a7d44;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 0.9em;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 1em;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background: #2f6837;
+    }
+
+    video {
+      border-radius: 12px;
+      margin-top: 0.5em; 
+      margin-bottom: 0.5em;
+      width: 100%;
+      max-height: 250px;
+      object-fit: contain;
+      background: black;
+    }
+
+    .receipt-examples {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 1em;
+    }
+
+    .receipt-examples img {
+      width: 15%;
+      border-radius: 10px;
+      border: 1.5px solid #8dc890;
+      user-select: none;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: #648c5a;
+      font-size: 0.9em;
+      margin-top: 1em;
+      user-select: none;
+    }
+
+    .icons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 32px;
+      margin-top: 1.5em;
+    }
+
+    .icons img {
+      height: 32px;
+      user-select: none;
+    }
+
+    p.instruction {
+      margin-top: 0.3em;
+      margin-bottom: 0.3em;
+      font-size: 0.95rem;
+      color: #3a7d44;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    select {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      padding: 0.75em 1em;
+      border-radius: 12px;
+      border: 1.5px solid #9ace94;
+      font-size: 0.95rem; /* main select box text */
+      margin-top: 0.5em;
+      color: #2a3e2b;
+      font-weight: 600;
+      background-color: white;
+      box-sizing: border-box;
+      transition: border-color 0.3s ease;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg fill='%233a7d44' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 0.9em center;
+      background-size: 1em;
+      cursor: pointer;
+    }
+
+    /* 👇 This controls the text inside the dropdown list */
+    select option {
+      font-size: 0.75rem; /* smaller text inside the list */
+      font-weight: 500;   /* a bit lighter so it looks cleaner */
+      color: #2a3e2b;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1;
+    }
+
+    select:focus {
+      border-color: #3a7d44;
+      outline: none;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="top-left-text">
+    KU9 Self-Check Deposit Order
+  </div>
+
+  <div class="container">
+    <div class="title">
+      Deposit not received?
+      <p>You will not lose any of your deposits.</p>
+    </div>
+
+    <form
+      hx-post="/orders/submit"
+      hx-encoding="multipart/form-data"
+      hx-target="#result"
+      hx-swap="innerHTML"
+      style="margin-top: 1.6em;"
+    >
+      <!-- Step 1 -->
+      <div class="step">
+        <span class="step-number">01</span>
+        <span class="step-label">Enter Deposit Order Number</span>
+        <p class="instruction">Login to your game account, go to "Deposit History", and copy your deposit order number.</p>
+
+        <img src="https://i.pinimg.com/736x/49/d8/da/49d8da0742c84b64a64e769c16ae80a0.jpg" alt="Order Number Example" style="width: 15%; border-radius: 12px; margin: 0.7em 0 1em 0; display: block; margin-left: auto; margin-right: auto;" />
+
+        <input
+          type="text"
+          name="order_no"
+          placeholder="Enter your deposit order number"
+          required
+          autocomplete="off"
+        />
+
+        <select name="channel_name" required>
+          <option value="" disabled selected>Select Channel Name</option>
+          <option value="LUCKYCATPAY">LUCKYCATPAY</option>
+          <option value="SSRPAY">SSRPAY</option>
+          <option value="TIGERPAY">TIGERPAY</option>
+          <option value="HRPAY">HRPAY</option>
+          <option value="777PAY">777PAY</option>
+          <option value="TFPAY">TFPAY</option>
+          <option value="AXISPAY">AXISPAY</option>
+          <option value="TKPAY">TKPAY</option>
+          <option value="AEEPAY">AEEPAY</option>
+          <option value="GTPAY">GTPAY</option>
+          <option value="SU77">SU77</option>
+          <option value="MMPAY">MMPAY</option>
+          <option value="BCAT">BCAT</option>
+          <option value="OP">OP</option>
+          <option value="OKPAY">OKPAY</option>
+          <option value="DA">DA</option>
+        </select>
+
+      </div>
+
+      <!-- Step 2 label -->
+      <div class="step" style="margin-top: 1em;">
+        <span class="step-number">02</span>
+        <span class="step-label">Upload Receipt</span>
+      </div>
+
+      <!-- Video BELOW "Upload Receipt" label -->
+      <div class="video-wrapper" style="margin-top:1em; margin-bottom:0.5em;">
+        <img 
+          src="https://reorder.money/assets/guide.CRFfi9VF.png" 
+          alt="Receipt guidance" 
+          style="width:100%; max-height:250px; object-fit:contain; border-radius:12px;"
+        />
+      </div>
+
+      <div class="title">
+      <p>Example receipt</p>
+      </div>
+
+      <!-- Receipt example images BELOW the video -->
+      <div class="receipt-examples" aria-label="Example receipts"> 
+      <img src="https://i.pinimg.com/736x/2e/76/6a/2e766af7be7d0830cb20f6719a8b1bf4.jpg" alt="Nagad Receipt" /> 
+      <img src="https://i.pinimg.com/736x/fe/6d/b5/fe6db5b89d9772f6f4a39df08b658bd4.jpg" alt="BKash Receipt" /> 
+      <img src="https://i.pinimg.com/736x/1d/99/a7/1d99a764f7d5e1b2c4db6454b48f52b9.jpg" alt="Rocket Receipt" /> 
+      </div>
+
+      <!-- Upload box -->
+      <div class="upload-box" style="margin-bottom: 1em;">
+        <div class="upload-text">
+          Please click the <b style="color:#3a7d44;">+</b> on the right to upload your payment receipt for verification.
+        </div>
+        <label class="upload-area" for="file-upload">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+            <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z" />
+          </svg>
+          <input type="file" id="file-upload" name="receipt" accept=".jpg,.jpeg,.png" required />
+        </label>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="instruction">
+        <p class="instruction">Enter Ref.no / Transaction ID</p>
+        <input
+          type="text"
+          name="ref_no"
+          placeholder="Enter Ref.No / Transaction ID on the receipt"
+          required
+          autocomplete="off"
+        />
+      </div>
+
+      <button type="submit">Submit</button>
+    </form>
+
+    <!-- Icons below Submit button -->
+    <div class="icons" role="group" aria-label="Supported payment icons">
+      <img src="https://i.pinimg.com/736x/81/e7/59/81e759a7c71b86deaf09d2c121cbb651.jpg" alt="Nagad" />
+      <img src="https://i.pinimg.com/736x/44/96/f0/4496f0747604e62e11d00f3694819bc5.jpg" alt="bKash" />
+      <img src="https://i.pinimg.com/736x/02/0a/3d/020a3dc7d1b2d71f15d7fbfa95e6f60c.jpg" alt="Rocket" />
+    </div>
+
+    <div class="footer-note">Secure upload — your data is protected.</div>
+  </div>
+    <!-- Modal -->
+  <div id="modal" class="modal" onclick="closeModal()" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; background-color: rgba(0,0,0,0.9); justify-content:center; align-items:center;">
+    <span class="close" style="position:absolute; top:20px; right:30px; font-size:40px; color:white; cursor:pointer;" onclick="closeModal()">&times;</span>
+    <img id="modalImg" style="display:none; max-width:90%; max-height:90%; border-radius:12px;">
+    <video id="modalVideo" style="display:none; max-width:90%; max-height:90%; border-radius:12px;" controls autoplay></video>
+  </div>
+
+  <script>
+    // Open modal function
+    function openModal(src, type) {
+      const modal = document.getElementById('modal');
+      const modalImg = document.getElementById('modalImg');
+      const modalVideo = document.getElementById('modalVideo');
+
+      modal.style.display = 'flex';
+
+      if(type === 'image'){
+        modalImg.src = src;
+        modalImg.style.display = 'block';
+        modalVideo.style.display = 'none';
+      } else if(type === 'video'){
+        modalVideo.src = src;
+        modalVideo.style.display = 'block';
+        modalImg.style.display = 'none';
+      }
+    }
+
+    // Close modal function
+    function closeModal() {
+      const modal = document.getElementById('modal');
+      const modalVideo = document.getElementById('modalVideo');
+      modal.style.display = 'none';
+      modalVideo.pause();
+    }
+
+    // Add click-to-zoom for all images and videos except the last 3 icons
+    document.addEventListener('DOMContentLoaded', () => {
+      // Images in steps & receipt examples
+      const clickableImages = document.querySelectorAll('.step img, .receipt-examples img, .video-wrapper img, .video-wrapper video');
+      clickableImages.forEach(el => {
+        el.style.cursor = 'pointer';
+        el.addEventListener('click', () => {
+          const type = el.tagName.toLowerCase() === 'video' ? 'video' : 'image';
+          openModal(el.src, type);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
