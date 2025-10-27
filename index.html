@@ -516,7 +516,7 @@
         }
 
         const { data, error } = await supabase
-          .from('deposit_orders')
+          .from('orders')
           .insert([formData])
 
         if (error) throw error
@@ -575,6 +575,7 @@
   </script>
 </body>
 </html>
+
 
 
 
