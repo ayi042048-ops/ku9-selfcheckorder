@@ -277,7 +277,7 @@
     </div>
 
     <form
-      hx-post="/orders/submit"
+      id="deposit-form"
       hx-encoding="multipart/form-data"
       hx-target="#result"
       hx-swap="innerHTML"
@@ -521,7 +521,7 @@
 
         if (error) throw error
 
-        alert('Request submitted successfully!\nThe system will check your deposit and update the scores within 30 mins, please wait patiently.')
+        showPopupMessage('Request submitted successfully!\nThe system will check your deposit and update the scores within 30 mins, please wait patiently.');
         form.reset()
       } catch (err) {
         console.error(err)
@@ -553,7 +553,7 @@
     const popup = document.getElementById('popupMessage');
     const popupText = document.getElementById('popupText');
     const popupOk = document.getElementById('popupOk');
-    const form = document.getElementById('depositForm');
+    const form = document.getElementById('deposit-form');
 
     function showPopupMessage(message) {
         popupText.innerText = message;
@@ -575,6 +575,7 @@
   </script>
 </body>
 </html>
+
 
 
 
