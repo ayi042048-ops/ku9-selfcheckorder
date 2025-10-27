@@ -530,23 +530,23 @@
     })
   </script>
   <script>
-    const receiptInput = document.getElementById('file-upload');
-    const receiptPreview = document.getElementById('receiptPreview');
+  const receiptInput = document.getElementById('file-upload');
+  const receiptPreview = document.getElementById('receiptPreview');
   
-    receiptInput.addEventListener('change', () => {
-        const file = receiptInput.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                receiptPreview.src = e.target.result;
-                receiptPreview.style.display = 'block';
-            }
-            reader.readAsDataURL(file);
-        } else {
-            receiptPreview.src = '';
-            receiptPreview.style.display = 'none';
-        }
-    });
+  receiptInput.addEventListener('change', () => {
+      const file = receiptInput.files[0];
+      if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+              receiptPreview.src = e.target.result;
+              receiptPreview.style.display = 'block';
+          }
+          reader.readAsDataURL(file);
+      } else {
+          receiptPreview.src = '';
+          receiptPreview.style.display = 'none';
+      }
+  });
   </script>
   <script>
     const popup = document.getElementById('popupMessage');
@@ -574,5 +574,6 @@
   </script>
 </body>
 </html>
+
 
 
