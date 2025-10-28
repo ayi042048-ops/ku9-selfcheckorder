@@ -262,46 +262,11 @@
       outline: none;
     }
 
-    #translateBtn {
-      position: fixed;
-      top: 16px;
-      right: 16px;
-      background: white;
-      color: #2a3e2b;
-      border: 1.5px solid #9ace94;
-      border-radius: 8px;
-      padding: 6px 10px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      box-shadow: 0 2px 6px rgba(42, 62, 43, 0.1);
-      z-index: 10000;
-    }
-    
-    #translateBtn img {
-      width: 18px;
-      height: 12px;
-      border-radius: 2px;
-    }
-    
-    #translateBtn .arrow {
-      font-size: 0.75rem;
-      color: #3a7d44;
-    }
-
   </style>
 
 </head>
   
 <body>
-  <button id="translateBtn">
-    <img src="https://flagcdn.com/16x12/bd.png" alt="BN Flag">
-    <span id="langLabel">BN</span>
-    <span class="arrow">▼</span>
-  </button>
   <div class="top-left-text">
     KU9 Self-Check Deposit Order
   </div>
@@ -458,59 +423,6 @@
       ">OK</button>
     </div>
   </div>
-  <script>
-  let currentLang = 'bn';
-  
-  // Define translations for all text
-  const translations = {
-    "KU9 Self-Check Deposit Order": "KU9 স্ব-চেক ডিপোজিট অর্ডার",
-    "Deposit not received?": "জমা পাওয়া যায়নি?",
-    "You will not lose any of your deposits.": "আপনি আপনার কোনো জমা হারাবেন না।",
-    "Enter Deposit Order Number": "ডিপোজিট অর্ডার নাম্বার লিখুন",
-    "Login to your game account, go to "Deposit History", copy your deposit order number and select correct Channel Name.": "আপনার গেম অ্যাকাউন্টে লগইন করুন, "ডিপোজিট হিস্ট্রি" এ যান, আপনার ডিপোজিট অর্ডার নম্বরটি কপি করুন এবং সঠিক চ্যানেলের নাম নির্বাচন করুন।",
-    "Enter your deposit order number": "আপনার ডিপোজিট অর্ডার নম্বর লিখুন",
-    "Select Channel Name": "চ্যানেলের নাম নির্বাচন করুন",
-    "Upload Receipt": "রসিদ আপলোড করুন",
-    "Example receipt": "রসিদের উদাহরণ",
-    "Please click the + on the right to upload your payment receipt for verification.": "যাচাইয়ের জন্য আপনার পেমেন্ট রসিদ আপলোড করতে ডানদিকে + ক্লিক করুন।",
-    "Enter Ref.no / Transaction ID": "লেনদেন আইডি লিখুন",
-    "Submit": "জমা দিন",
-    "Secure upload — your data is protected.": "নিরাপদ আপলোড — আপনার ডেটা সুরক্ষিত।",
-    "Request submitted successfully!\nThe system will check your deposit and update the scores within 30 mins, please wait patiently.": "অনুরোধ সফলভাবে জমা দেওয়া হয়েছে!\nসিস্টেম আপনার জমাকৃত টাকা পরীক্ষা করবে এবং ৩০ মিনিটের মধ্যে স্কোর আপডেট করবে, অনুগ্রহ করে ধৈর্য ধরে অপেক্ষা করুন।"
-  };
-  
-  // Function to translate
-  function updateLanguage() {
-    // Go through all elements and translate if matching text found
-    document.querySelectorAll('body *').forEach(el => {
-      const original = el.dataset.originalText || el.textContent.trim();
-      if (!el.dataset.originalText) el.dataset.originalText = original; // store original text once
-  
-      if (currentLang === 'bn' && translations[original]) {
-        el.textContent = translations[original];
-      } else if (currentLang === 'en' && el.dataset.originalText) {
-        el.textContent = el.dataset.originalText;
-      }
-    });
-  
-    // Update button flag & label
-    const flag = currentLang === 'bn' 
-      ? 'https://flagcdn.com/16x12/bd.png'
-      : 'https://flagcdn.com/16x12/gb.png';
-    const label = currentLang.toUpperCase();
-    document.getElementById('translateBtn').innerHTML = 
-      `<img src="${flag}" alt="${label} Flag"><span id="langLabel">${label}</span><span class="arrow">▼</span>`;
-  }
-  
-  // Initialize page as Bengali
-  updateLanguage();
-  
-  // Toggle on click
-  document.getElementById('translateBtn').addEventListener('click', () => {
-    currentLang = currentLang === 'en' ? 'bn' : 'en';
-    updateLanguage();
-  });
-  </script>
   
   <script>
     // Open modal function
@@ -662,6 +574,7 @@
   </script>
 </body>
 </html>
+
 
 
 
