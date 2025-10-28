@@ -558,7 +558,7 @@
         popupText.innerText = message;
         popup.style.display = 'flex';
     }
-
+    window.showPopupMessage = showPopupMessage;
     popupOk.addEventListener('click', () => {
         popup.style.display = 'none';
         form.reset(); // optional: clear form after submission
@@ -574,6 +574,7 @@
   </script>
 </body>
 </html>
+
 
 
 
