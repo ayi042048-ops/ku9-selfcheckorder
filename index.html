@@ -264,39 +264,44 @@
 
     #translateBtn {
       position: fixed;
-      top: 15px;
-      right: 20px;
-      z-index: 1000;
+      top: 16px;
+      right: 16px;
+      background: white;
+      color: #2a3e2b;
+      border: 1.5px solid #9ace94;
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-weight: 600;
+      font-size: 0.9rem;
       display: flex;
       align-items: center;
-      gap: 5px;
-      padding: 4px 8px;
-      font-size: 0.85rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      background-color: #f9f9f9;
-      color: #333;
+      gap: 6px;
       cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 6px rgba(42, 62, 43, 0.1);
+      z-index: 10000;
     }
+    
     #translateBtn img {
-      width: 16px;
+      width: 18px;
       height: 12px;
+      border-radius: 2px;
     }
+    
     #translateBtn .arrow {
-      font-size: 10px;
+      font-size: 0.75rem;
+      color: #3a7d44;
     }
 
   </style>
 
+</head>
+  
+<body>
   <button id="translateBtn">
     <img src="https://flagcdn.com/16x12/bd.png" alt="BN Flag">
     <span id="langLabel">BN</span>
     <span class="arrow">▼</span>
   </button>
-</head>
-  
-<body>
   <div class="top-left-text">
     KU9 Self-Check Deposit Order
   </div>
@@ -657,6 +662,7 @@
   </script>
 </body>
 </html>
+
 
 
 
