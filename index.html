@@ -288,12 +288,6 @@
   <div class="top-left-text">
     KU9 Self-Check Deposit Order
   </div>
-    <button id="translateBtn">
-    <img id="flagIcon" src="https://flagcdn.com/16x12/gb.png" alt="EN">
-    <span id="langLabel">EN</span>
-    <span class="arrow">▼</span>
-  </button>
-  
   <div class="container">
     <div class="title">
       Deposit not received?
@@ -466,34 +460,33 @@
   
     <!-- Translate Button -->
     <button id="translateBtn">
-      <img src="https://flagcdn.com/16x12/gb.png" alt="EN Flag" class="flag-icon"> EN <span class="arrow">▼</span>
+      <img src="https://flagcdn.com/16x12/bd.png" class="flag-icon"> BN <span class="arrow">▼</span>
     </button>
   </main>
   <script>
-    // Initialize default language
+    // Default language: Bengali
     let currentLang = 'bn';
     const translateBtn = document.getElementById('translateBtn');
   
-    // Set initial text
-    document.querySelectorAll('.translatable').forEach(el => {
-      el.textContent = el.dataset[currentLang];
-    });
-  
-    // Toggle language on button click
-    translateBtn.addEventListener('click', () => {
-      currentLang = currentLang === 'en' ? 'bn' : 'en';
-      
-      // Update all translatable text
+    // Set initial text to BN
+    function updateText() {
       document.querySelectorAll('.translatable').forEach(el => {
         el.textContent = el.dataset[currentLang];
       });
   
-      // Update button with correct flag and label
+      // Update button flag and label
       const flagSrc = currentLang === 'en' 
         ? 'https://flagcdn.com/16x12/gb.png' 
         : 'https://flagcdn.com/16x12/bd.png';
-  
       translateBtn.innerHTML = `<img src="${flagSrc}" class="flag-icon"> ${currentLang.toUpperCase()} <span class="arrow">▼</span>`;
+    }
+  
+    updateText(); // Run on page load
+  
+    // Toggle language on click
+    translateBtn.addEventListener('click', () => {
+      currentLang = currentLang === 'en' ? 'bn' : 'en';
+      updateText();
     });
   </script>
   
@@ -647,6 +640,7 @@
   </script>
 </body>
 </html>
+
 
 
 
