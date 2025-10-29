@@ -299,24 +299,8 @@
           autocomplete="off"
         />
 
-        <select name="channel_name" required>
+        <select name="channel_name" id="channelSelect" required>
           <option value="" disabled selected>Select Channel Name</option>
-          <option value="LUCKYCATPAY">LUCKYCATPAY</option>
-          <option value="SSRPAY">SSRPAY</option>
-          <option value="TIGERPAY">TIGERPAY</option>
-          <option value="HRPAY">HRPAY</option>
-          <option value="777PAY">777PAY</option>
-          <option value="TFPAY">TFPAY</option>
-          <option value="AXISPAY">AXISPAY</option>
-          <option value="TKPAY">TKPAY</option>
-          <option value="AEEPAY">AEEPAY</option>
-          <option value="GTPAY">GTPAY</option>
-          <option value="SU77">SU77</option>
-          <option value="MMPAY">MMPAY</option>
-          <option value="BCAT">BCAT</option>
-          <option value="OP">OP</option>
-          <option value="OKPAY">OKPAY</option>
-          <option value="DA">DA</option>
         </select>
 
       </div>
@@ -471,7 +455,35 @@
   const SUPABASE_URL = 'https://gfeopuwjfzigxgojggew.supabase.co'
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdmZW9wdXdqZnppZ3hnb2pnZ2V3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE1OTE1NzcsImV4cCI6MjA3NzE2NzU3N30.oSc000dfrevIxY_u1MWMWmH6d-Zhi4g9kDT66JtVbIY'
   const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-  
+  const channelSelect = document.getElementById('channelSelect')
+
+  async function loadChannels() {
+    const { data: channels, error } = await supabase
+      .from('channels')
+      .select('*')
+      .order('id', { ascending: true })
+
+    if (error) {
+      console.error('Error loading channels:', error)
+      channelSelect.innerHTML = `<option value="">Failed to load channels</option>`
+      return
+    }
+
+    // Clear old options
+    channelSelect.innerHTML = `<option value="" disabled selected>Select Channel Name</option>`
+
+    // Add each channel to the select
+    channels.forEach(ch => {
+      const option = document.createElement('option')
+      option.value = ch.name
+      option.textContent = ch.name
+      channelSelect.appendChild(option)
+    })
+  }
+
+  // Load the channels when page loads
+  document.addEventListener('DOMContentLoaded', loadChannels)
+
   const form = document.getElementById('deposit-form')
   const fileInput = document.getElementById('file-upload')
   const allowedTypes = ['image/jpeg', 'image/png', 'image/heic', 'image/heif']
@@ -574,6 +586,7 @@
   </script>
 </body>
 </html>
+
 
 
 
