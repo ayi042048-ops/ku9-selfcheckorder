@@ -475,8 +475,8 @@
     // Add each channel to the select
     channels.forEach(ch => {
       const option = document.createElement('option')
-      option.value = ch.name
-      option.textContent = ch.name
+      option.value = ch.channel_name
+      option.textContent = ch.channel_name
       channelSelect.appendChild(option)
     })
   }
@@ -586,6 +586,7 @@
   </script>
 </body>
 </html>
+
 
 
 
