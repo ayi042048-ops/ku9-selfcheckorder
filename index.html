@@ -550,7 +550,7 @@
       const { data, error } = await supabase.from('orders').insert([formData])
       if (error) throw error
   
-      showPopupMessage("Request submitted successfully! The system will check your deposit within 30 mins.");
+      showPopupMessage("Request submitted successfully!\nThe system will check your deposit and update the scores within 5-30 mins. Please wait patiently.");
     } catch (err) {
       console.error('Submission error:', err);
       showErrorPopup(`⚠️ SUBMISSION ERROR!\n${err.message}`,"https://tinyurl.com/ku9grahakaseba");
@@ -654,7 +654,7 @@
     document.body.addEventListener('htmx:afterSwap', (event) => {
       if (event.detail.target.id === 'result') {
         showPopupMessage(
-          "Request submitted successfully!\nThe system will check your deposit and update within 30 mins."
+          "Request submitted successfully!\nThe system will check your deposit and update the scores within 5-30 mins. Please wait patiently."
         );
       }
     });
@@ -662,6 +662,7 @@
 
 </body>
 </html>
+
 
 
 
