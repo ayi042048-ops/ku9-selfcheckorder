@@ -620,6 +620,12 @@
       // Red theme
       popup.querySelector('div').style.backgroundColor = '#f8d7da';
       popupText.style.color = '#842029';
+      popupOk.textContent = 'Contact Customer Service';
+      popupOk.style.backgroundColor = '#d9534f';
+      popupOk.style.color = 'white';
+      popupOk.onclick = () => {
+        window.open(supportUrl, '_blank'); // Open link in new tab
+      };
       let closeBtn = popupContent.querySelector('.popupclose');
       if (!closeBtn) {
         closeBtn = document.createElement('button');
@@ -637,14 +643,7 @@
         closeBtn.onclick = () => {
           popup.style.display = 'none';
         };
-      }  
-      
-      popupOk.textContent = 'Contact Customer Service';
-      popupOk.style.backgroundColor = '#d9534f';
-      popupOk.style.color = 'white';
-      popupOk.onclick = () => {
-        window.open(supportUrl, '_blank'); // Open link in new tab
-      };
+      }     
     }
   
     // Make globally accessible
@@ -663,6 +662,7 @@
 
 </body>
 </html>
+
 
 
 
