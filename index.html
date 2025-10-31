@@ -589,6 +589,25 @@
       // Red theme
       popup.querySelector('div').style.backgroundColor = '#f8d7da';
       popupText.style.color = '#842029';
+      let closeBtn = popupContent.querySelector('.popup-close');
+      if (!closeBtn) {
+        closeBtn = document.createElement('button');
+        closeBtn.innerText = '✖';
+        closeBtn.className = 'popup-close';
+        closeBtn.style.position = 'absolute';
+        closeBtn.style.top = '10px';
+        closeBtn.style.right = '10px';
+        closeBtn.style.background = 'transparent';
+        closeBtn.style.border = 'none';
+        closeBtn.style.fontSize = '1.2em';
+        closeBtn.style.cursor = 'pointer';
+        closeBtn.style.color = '#842029';
+        popupContent.appendChild(closeBtn);
+        closeBtn.onclick = () => {
+          popup.style.display = 'none';
+        };
+      }  
+      
       popupOk.textContent = 'Contact Customer Service';
       popupOk.style.backgroundColor = '#d9534f';
       popupOk.style.color = 'white';
@@ -613,6 +632,7 @@
 
 </body>
 </html>
+
 
 
 
