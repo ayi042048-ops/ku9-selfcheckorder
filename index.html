@@ -535,7 +535,7 @@
       form.reset()
     } catch (err) {
       console.error('Submission error:', err);
-      showErrorPopup("⚠️ SUBMISSION ERROR!\nThis order number or transaction ID has already been submitted many times today. Please contact Customer Service for assistance.","https://tinyurl.com/ku9grahakaseba");
+      showErrorPopup(`⚠️ SUBMISSION ERROR!\n${err.message}`,"https://tinyurl.com/ku9grahakaseba");
     }
   })
   </script>
@@ -613,6 +613,7 @@
 
 </body>
 </html>
+
 
 
 
