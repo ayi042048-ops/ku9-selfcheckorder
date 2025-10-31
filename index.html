@@ -534,8 +534,8 @@
       showPopupMessage("Request submitted successfully! The system will check your deposit within 30 mins.");
       form.reset()
     } catch (err) {
-      console.error('Submission error:', err)
-      alert('Something went wrong: ' + err.message)
+      console.error('Submission error:', err);
+      showErrorPopup("⚠️ Submission error!\nThis order number or transaction ID has already been submitted many times today. Please contact Customer Service for assistance.","https://tinyurl.com/ku9grahakaseba");
     }
   })
   </script>
@@ -565,27 +565,55 @@
     const popupText = document.getElementById('popupText');
     const popupOk = document.getElementById('popupOk');
     const form = document.getElementById('deposit-form');
-
+  
+    // Show success popup 
     function showPopupMessage(message) {
-        popupText.innerText = message;
-        popup.style.display = 'flex';
-    }
-    window.showPopupMessage = showPopupMessage;
-    popupOk.addEventListener('click', () => {
+      popupText.innerText = message;
+      popup.style.display = 'flex';
+      // Reset popup colors to green theme
+      popup.querySelector('div').style.backgroundColor = '#d1f2d8';
+      popupText.style.color = '#2a3e2b';
+      popupOk.textContent = 'OK';
+      popupOk.style.backgroundColor = '#3a7d44';
+      popupOk.style.color = 'white';
+      popupOk.onclick = () => {
         popup.style.display = 'none';
-        form.reset(); // optional: clear form after submission
-    });
-
+        form.reset();
+      };
+    }
+  
+    // Show error popup 
+    function showErrorPopup(message, supportUrl) {
+      popupText.innerText = message;
+      popup.style.display = 'flex';
+      // Red theme
+      popup.querySelector('div').style.backgroundColor = '#f8d7da';
+      popupText.style.color = '#842029';
+      popupOk.textContent = 'Contact Customer Service';
+      popupOk.style.backgroundColor = '#d9534f';
+      popupOk.style.color = 'white';
+      popupOk.onclick = () => {
+        window.open(supportUrl, '_blank'); // Open link in new tab
+      };
+    }
+  
+    // Make globally accessible
+    window.showPopupMessage = showPopupMessage;
+    window.showErrorPopup = showErrorPopup;
+  
+    // Existing HTMX event listener (for success)
     document.body.addEventListener('htmx:afterSwap', (event) => {
-        if (event.detail.target.id === 'result') {
-            showPopupMessage(
-                "Request submitted successfully!\nThe system will check your deposit and update the scores within 30 mins, please wait patiently."
-            );
-        }
+      if (event.detail.target.id === 'result') {
+        showPopupMessage(
+          "Request submitted successfully!\nThe system will check your deposit and update within 30 mins."
+        );
+      }
     });
   </script>
+
 </body>
 </html>
+
 
 
 
