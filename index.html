@@ -386,6 +386,7 @@
       z-index:9999;
   ">
     <div style="
+        position: relative; /* Needed for X button positioning */
         background-color:#d1f2d8;
         color:#2a3e2b;
         border-radius:16px;
@@ -395,6 +396,24 @@
         width:90%;
         box-shadow:0 4px 15px rgba(42,62,43,0.2);
     ">
+      <!-- Close Button -->
+      <button id="popupClose" style="
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          width: 24px;
+          height: 24px;
+          border: none;
+          border-radius: 50%;
+          background-color: #f8d7da;
+          color: #842029;
+          font-weight: bold;
+          cursor: pointer;
+          line-height: 24px;
+          text-align: center;
+          padding: 0;
+      ">×</button>
+  
       <p id="popupText" style="margin-bottom:20px; font-weight:600; line-height:1.4;"></p>
       <button id="popupOk" style="
           background-color:#3a7d44;
@@ -532,7 +551,6 @@
       if (error) throw error
   
       showPopupMessage("Request submitted successfully! The system will check your deposit within 30 mins.");
-      form.reset()
     } catch (err) {
       console.error('Submission error:', err);
       showErrorPopup(`⚠️ SUBMISSION ERROR!\n${err.message}`,"https://tinyurl.com/ku9grahakaseba");
@@ -564,7 +582,20 @@
     const popup = document.getElementById('popupMessage');
     const popupText = document.getElementById('popupText');
     const popupOk = document.getElementById('popupOk');
+    const popupClose = document.getElementById('popupClose');
     const form = document.getElementById('deposit-form');
+
+    function showPopupMessage(message) {
+    document.getElementById('popupText').innerText = message;
+    popup.style.display = 'flex';
+    }
+
+    function hidePopup() {
+    popup.style.display = 'none';
+    }
+
+    popupOk.addEventListener('click', hidePopup);
+    popupClose.addEventListener('click', hidePopup);
   
     // Show success popup 
     function showPopupMessage(message) {
@@ -589,11 +620,11 @@
       // Red theme
       popup.querySelector('div').style.backgroundColor = '#f8d7da';
       popupText.style.color = '#842029';
-      let closeBtn = popupContent.querySelector('.popup-close');
+      let closeBtn = popupContent.querySelector('.popupclose');
       if (!closeBtn) {
         closeBtn = document.createElement('button');
         closeBtn.innerText = '✖';
-        closeBtn.className = 'popup-close';
+        closeBtn.className = 'popupclose';
         closeBtn.style.position = 'absolute';
         closeBtn.style.top = '10px';
         closeBtn.style.right = '10px';
@@ -632,6 +663,7 @@
 
 </body>
 </html>
+
 
 
 
