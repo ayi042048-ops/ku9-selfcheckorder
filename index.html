@@ -299,10 +299,6 @@
           autocomplete="off"
         />
 
-        <select name="channel_name" id="channelSelect" required>
-          <option value="" disabled selected>Select Channel Name</option>
-        </select>
-
       </div>
 
       <!-- Step 2 label -->
@@ -474,34 +470,6 @@
   const SUPABASE_URL = 'https://gfeopuwjfzigxgojggew.supabase.co'
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdmZW9wdXdqZnppZ3hnb2pnZ2V3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE1OTE1NzcsImV4cCI6MjA3NzE2NzU3N30.oSc000dfrevIxY_u1MWMWmH6d-Zhi4g9kDT66JtVbIY'
   const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-  const channelSelect = document.getElementById('channelSelect')
-
-  async function loadChannels() {
-    const { data: channels, error } = await supabase
-      .from('channels')
-      .select('*')
-      .order('id', { ascending: true })
-
-    if (error) {
-      console.error('Error loading channels:', error)
-      channelSelect.innerHTML = `<option value="">Failed to load channels</option>`
-      return
-    }
-
-    // Clear old options
-    channelSelect.innerHTML = `<option value="" disabled selected>Select Channel Name</option>`
-
-    // Add each channel to the select
-    channels.forEach(ch => {
-      const option = document.createElement('option')
-      option.value = ch.channel_name
-      option.textContent = ch.channel_name
-      channelSelect.appendChild(option)
-    })
-  }
-
-  // Load the channels when page loads
-  document.addEventListener('DOMContentLoaded', loadChannels)
 
   const form = document.getElementById('deposit-form')
   const fileInput = document.getElementById('file-upload')
@@ -541,7 +509,6 @@
       // Prepare data for table
       const formData = {
         order_no: form.order_no.value,
-        channel_name: form.channel_name.value,
         ref_no: form.ref_no.value,
         receipt_url: publicUrl
       }
@@ -662,6 +629,7 @@
 
 </body>
 </html>
+
 
 
 
