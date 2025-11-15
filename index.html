@@ -567,6 +567,9 @@
       uploadBox.style.border = "";
       const file = e.dataTransfer.files[0];
       previewFile(file);
+      const dt = new DataTransfer();
+      dt.items.add(file);
+      fileInput.files = dt.files;
     });
   
     // --- paste from clipboard ---
@@ -576,6 +579,9 @@
         if (items[i].kind === "file") {
           const file = items[i].getAsFile();
           previewFile(file);
+          const dt = new DataTransfer();
+          dt.items.add(file);
+          fileInput.files = dt.files;
           break;
         }
       }
@@ -667,6 +673,7 @@
 
 </body>
 </html>
+
 
 
 
