@@ -328,11 +328,11 @@
       </div>
 
       <!-- Upload box -->
-      <div class="upload-box" style="margin-bottom: 1em;">
+      <div class="upload-box" id="upload-box" style="margin-bottom: 1em;">
         <div class="upload-text">
           Please click the <b style="color:#3a7d44;">+</b> on the right to upload your payment receipt for verification.
         </div>
-        <label id="upload-area" class="upload-area" for="file-upload">
+        <label class="upload-area" for="file-upload">
           <img id="receiptPreview" src="" alt="Receipt Preview" style="display:none; width:100%; height:100%; object-fit:cover; border-radius:12px;" />
           <svg id="plusIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
             <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z" />
@@ -527,61 +527,58 @@
   
   <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const fileUpload = document.getElementById("file-upload");
+    const uploadBox = document.getElementById("upload-box");
+    const fileInput = document.getElementById("file-upload");
     const receiptPreview = document.getElementById("receiptPreview");
     const plusIcon = document.getElementById("plusIcon");
-    const uploadArea = document.getElementById("upload-area");
   
-    // Existing file input change (click to select)
-    fileUpload.addEventListener("change", function () {
-      const file = this.files[0];
-      if (file) {
-        displayImage(file);
-      }
-    });
-  
-    // Drag & Drop
-    uploadArea.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      uploadArea.classList.add('dragover'); // optional visual feedback
-    });
-  
-    uploadArea.addEventListener('dragleave', () => {
-      uploadArea.classList.remove('dragover');
-    });
-  
-    uploadArea.addEventListener('drop', (e) => {
-      e.preventDefault();
-      uploadArea.classList.remove('dragover');
-      const file = e.dataTransfer.files[0];
-      if (file) displayImage(file);
-    });
-  
-    // Paste
-    document.addEventListener('paste', (e) => {
-      const items = e.clipboardData.items;
-      for (let i = 0; i < items.length; i++) {
-        if (items[i].kind === 'file') {
-          const file = items[i].getAsFile();
-          displayImage(file);
-        }
-      }
-    });
-  
-    // Function to display image
-    function displayImage(file) {
-      if (!file.type.startsWith('image/')) {
-        alert('Please upload an image file.');
-        return;
-      }
+    // --- helper to show image preview ---
+    function previewFile(file) {
+      if (!file) return;
       const reader = new FileReader();
-      reader.onload = function (e) {
+      reader.onload = function(e) {
         receiptPreview.src = e.target.result;
         receiptPreview.style.display = "block"; // show image
-        plusIcon.style.display = "none";        // hide "+"
+        plusIcon.style.display = "none";       // hide "+"
       };
       reader.readAsDataURL(file);
     }
+  
+    // --- handle file input change ---
+    fileInput.addEventListener("change", function() {
+      previewFile(this.files[0]);
+    });
+  
+    // --- click anywhere on uploadBox to trigger file input ---
+    uploadBox.addEventListener("click", () => fileInput.click());
+  
+    // --- drag & drop ---
+    uploadBox.addEventListener("dragover", e => {
+      e.preventDefault();
+      uploadBox.style.border = "2px dashed #3a7d44"; // optional visual feedback
+    });
+    uploadBox.addEventListener("dragleave", e => {
+      e.preventDefault();
+      uploadBox.style.border = ""; // reset style
+    });
+    uploadBox.addEventListener("drop", e => {
+      e.preventDefault();
+      uploadBox.style.border = "";
+      const file = e.dataTransfer.files[0];
+      previewFile(file);
+    });
+  
+    // --- paste from clipboard ---
+    document.addEventListener("paste", e => {
+      const items = e.clipboardData.items;
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].kind === "file") {
+          const file = items[i].getAsFile();
+          previewFile(file);
+          break;
+        }
+      }
+    });
   });
   </script>
 
@@ -669,6 +666,7 @@
 
 </body>
 </html>
+
 
 
 
